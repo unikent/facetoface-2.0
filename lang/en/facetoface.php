@@ -1,4 +1,5 @@
 <?php
+$string['facetoface:addinstance'] = 'Add a new Face-to-face activity';
 $string['addmanageremailaddress'] = 'Add manager email address';
 $string['addmanageremailinstruction'] = 'You have not previously entered your manager\'s email address. Please enter it below to sign-up for this session. ';
 $string['addsession'] = 'Add a new session';
