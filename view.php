@@ -52,7 +52,12 @@ if (!empty($download)) {
 require_course_login($course, true, $cm);
 require_capability('mod/facetoface:view', $context);
 
-add_to_log($course->id, 'facetoface', 'view', "view.php?id=$cm->id", $facetoface->id, $cm->id);
+$event = \mod_facetoface\event\course_module_viewed::create(array(
+    'objectid' => $cm->id,
+    'courseid' => $course->id,
+    'context' => context_module::instance($cm->id)
+));
+$event->trigger();
 
 $title = $course->shortname . ': ' . format_string($facetoface->name);
 
