@@ -15,7 +15,11 @@ require_course_login($course);
 $context = context_course::instance($course->id);
 require_capability('mod/facetoface:view', $context);
 
-add_to_log($course->id, 'facetoface', 'view all', "index.php?id=$course->id");
+$event = \mod_facetoface\event\course_module_instance_list_viewed::create(array(
+    'objectid' => $course->id,
+    'context' => \course_context::instance($course->id)
+));
+$event->trigger();
 
 $strfacetofaces = get_string('modulenameplural', 'facetoface');
 $strfacetoface = get_string('modulename', 'facetoface');
