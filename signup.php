@@ -75,7 +75,16 @@ if ($fromform = $mform->get_data()) { // Form submitted
 
     // User can not update Manager's email (depreciated functionality)
     if (!empty($fromform->manageremail)) {
-        add_to_log($course->id, 'facetoface', 'update manageremail (FAILED)', "signup.php?s=$session->id", $facetoface->id, $cm->id);
+        $event = \mod_facetoface\event\error::create(array(
+            'objectid' => $cm->id,
+            'courseid' => $course->id,
+            'other' => array(
+                'type' => 'manager_update',
+                'description' => 'Updating manager email failed'
+            ),
+            'context' => context_module::instance($cm->id)
+        ));
+        $event->trigger();
     }
 
     // Get signup type
@@ -95,7 +104,15 @@ if ($fromform = $mform->get_data()) { // Form submitted
     } else if (facetoface_manager_needed($facetoface) && !facetoface_get_manageremail($USER->id)) {
         print_error('error:manageremailaddressmissing', 'facetoface', $returnurl);
     } else if ($submissionid = facetoface_user_signup($session, $facetoface, $course, $fromform->discountcode, $fromform->notificationtype, $statuscode)) {
-        add_to_log($course->id, 'facetoface','signup',"signup.php?s=$session->id", $session->id, $cm->id);
+        $event = \mod_facetoface\event\signup::create(array(
+            'objectid' => $cm->id,
+            'courseid' => $course->id,
+            'other' => array(
+                'sessionid' => $session->id
+            ),
+            'context' => context_module::instance($cm->id)
+        ));
+        $event->trigger();
 
         $message = get_string('bookingcompleted', 'facetoface');
         if ($session->datetimeknown && $facetoface->confirmationinstrmngr) {
@@ -107,7 +124,16 @@ if ($fromform = $mform->get_data()) { // Form submitted
         $timemessage = 4;
         redirect($returnurl, $message, $timemessage);
     } else {
-        add_to_log($course->id, 'facetoface','signup (FAILED)',"signup.php?s=$session->id", $session->id, $cm->id);
+        $event = \mod_facetoface\event\error::create(array(
+            'objectid' => $cm->id,
+            'courseid' => $course->id,
+            'other' => array(
+                'type' => 'signup',
+                'description' => 'signup failed'
+            ),
+            'context' => context_module::instance($cm->id)
+        ));
+        $event->trigger();
         print_error('error:problemsigningup', 'facetoface', $returnurl);
     }
 

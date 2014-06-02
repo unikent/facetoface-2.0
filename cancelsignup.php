@@ -47,7 +47,15 @@ if ($fromform = $mform->get_data()) { // Form submitted
 
     $errorstr = '';
     if (facetoface_user_cancel($session, false, false, $errorstr, $fromform->cancelreason)) {
-        add_to_log($course->id, 'facetoface', 'cancel booking', "cancelsignup.php?s=$session->id", $facetoface->id, $cm->id);
+        $event = \mod_facetoface\event\booking_cancelled::create(array(
+            'objectid' => $cm->id,
+            'courseid' => $course->id,
+            'other' => array(
+                'sessionid' => $session->id
+            ),
+            'context' => context_module::instance($cm->id)
+        ));
+        $event->trigger();
 
         $message = get_string('bookingcancelled', 'facetoface');
 
@@ -68,7 +76,16 @@ if ($fromform = $mform->get_data()) { // Form submitted
         redirect($returnurl, $message, $timemessage);
     }
     else {
-        add_to_log($course->id, 'facetoface', "cancel booking (FAILED)", "cancelsignup.php?s=$session->id", $facetoface->id, $cm->id);
+        $event = \mod_facetoface\event\error::create(array(
+            'objectid' => $cm->id,
+            'courseid' => $course->id,
+            'other' => array(
+                'type' => 'booking_cancelled',
+                'description' => 'Cancel booking failed'
+            ),
+            'context' => context_module::instance($cm->id)
+        ));
+        $event->trigger();
         redirect($returnurl, $errorstr, $timemessage);
     }
 

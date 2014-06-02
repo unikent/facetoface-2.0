@@ -128,16 +128,35 @@ if ($form = data_submitted()) {
     elseif (!empty($form->requests)) {
         // Approve requests
         if ($can_approve_requests && facetoface_approve_requests($form)) {
-            add_to_log($course->id, 'facetoface', 'approve requests', "view.php?id=$cm->id", $facetoface->id, $cm->id);
+            $event = \mod_facetoface\event\requests_approved::create(array(
+                'objectid' => $cm->id,
+                'courseid' => $course->id,
+                'context' => context_module::instance($cm->id)
+            ));
+            $event->trigger();
         }
 
         redirect($return);
     }
     elseif ($takeattendance) {
         if (facetoface_take_attendance($form)) {
-            add_to_log($course->id, 'facetoface', 'take attendance', "view.php?id=$cm->id", $facetoface->id, $cm->id);
+            $event = \mod_facetoface\event\attendance_taken::create(array(
+                'objectid' => $cm->id,
+                'courseid' => $course->id,
+                'context' => context_module::instance($cm->id)
+            ));
+            $event->trigger();
         } else {
-            add_to_log($course->id, 'facetoface', 'take attendance (FAILED)', "view.php?id=$cm->id", $face->id, $cm->id);
+            $event = \mod_facetoface\event\error::create(array(
+                'objectid' => $cm->id,
+                'courseid' => $course->id,
+                'other' => array(
+                    'type' => 'attendance_taken',
+                    'description' => 'Take attendance failed'
+                ),
+                'context' => context_module::instance($cm->id)
+            ));
+            $event->trigger();
         }
         redirect($return.'&takeattendance=1');
     }
@@ -147,7 +166,12 @@ if ($form = data_submitted()) {
 /**
  * Print page header
  */
-add_to_log($course->id, 'facetoface', 'view attendees', "view.php?id=$cm->id", $facetoface->id, $cm->id);
+$event = \mod_facetoface\event\attendees_viewed::create(array(
+    'objectid' => $cm->id,
+    'courseid' => $course->id,
+    'context' => context_module::instance($cm->id)
+));
+$event->trigger();
 
 $pagetitle = format_string($facetoface->name);
 

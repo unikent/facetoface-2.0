@@ -77,10 +77,27 @@ if ($d and $confirm) {
     }
 
     if (facetoface_delete_session($session)) {
-        add_to_log($course->id, 'facetoface', 'delete session', 'sessions.php?s='.$session->id, $facetoface->id, $cm->id);
+        $event = \mod_facetoface\event\session_deleted::create(array(
+            'objectid' => $cm->id,
+            'courseid' => $course->id,
+            'other' => array(
+                'sessionid' => $session->id
+            ),
+            'context' => context_module::instance($cm->id)
+        ));
+        $event->trigger();
     }
     else {
-        add_to_log($course->id, 'facetoface', 'delete session (FAILED)', 'sessions.php?s='.$session->id, $facetoface->id, $cm->id);
+        $event = \mod_facetoface\event\error::create(array(
+            'objectid' => $cm->id,
+            'courseid' => $course->id,
+            'other' => array(
+                'type' => 'session_deleted',
+                'description' => 'Session deletion failed'
+            ),
+            'context' => context_module::instance($cm->id)
+        ));
+        $event->trigger();
         print_error('error:couldnotdeletesession', 'facetoface', $returnurl);
     }
     redirect($returnurl);
@@ -158,7 +175,16 @@ if ($fromform = $mform->get_data()) { // Form submitted
         $todb->id = $session->id;
         if (!facetoface_update_session($todb, $sessiondates)) {
             $transaction->force_transaction_rollback();
-            add_to_log($course->id, 'facetoface', 'update session (FAILED)', "sessions.php?s=$session->id", $facetoface->id, $cm->id);
+            $event = \mod_facetoface\event\error::create(array(
+                'objectid' => $cm->id,
+                'courseid' => $course->id,
+                'other' => array(
+                    'type' => 'session_updated',
+                    'description' => 'Session update failed'
+                ),
+                'context' => context_module::instance($cm->id)
+            ));
+            $event->trigger();
             print_error('error:couldnotupdatesession', 'facetoface', $returnurl);
         }
 
@@ -171,7 +197,16 @@ if ($fromform = $mform->get_data()) { // Form submitted
     else {
         if (!$sessionid = facetoface_add_session($todb, $sessiondates)) {
             $transaction->force_transaction_rollback();
-            add_to_log($course->id, 'facetoface', 'add session (FAILED)', 'sessions.php?f='.$facetoface->id, $facetoface->id, $cm->id);
+            $event = \mod_facetoface\event\error::create(array(
+                'objectid' => $cm->id,
+                'courseid' => $course->id,
+                'other' => array(
+                    'type' => 'session_added',
+                    'description' => 'Session add failed'
+                ),
+                'context' => context_module::instance($cm->id)
+            ));
+            $event->trigger();
             print_error('error:couldnotaddsession', 'facetoface', $returnurl);
         }
     }
@@ -203,10 +238,26 @@ if ($fromform = $mform->get_data()) { // Form submitted
     facetoface_update_calendar_entries($session, $facetoface);
 
     if ($update) {
-        add_to_log($course->id, 'facetoface', 'updated session', "sessions.php?s=$session->id", $facetoface->id, $cm->id);
+        $event = \mod_facetoface\event\session_updated::create(array(
+            'objectid' => $cm->id,
+            'courseid' => $course->id,
+            'other' => array(
+                'sessionid' => $session->id
+            ),
+            'context' => context_module::instance($cm->id)
+        ));
+        $event->trigger();
     }
     else {
-        add_to_log($course->id, 'facetoface', 'added session', 'facetoface', 'sessions.php?f='.$facetoface->id, $facetoface->id, $cm->id);
+        $event = \mod_facetoface\event\session_added::create(array(
+            'objectid' => $cm->id,
+            'courseid' => $course->id,
+            'other' => array(
+                'facetofaceid' => $facetoface->id
+            ),
+            'context' => context_module::instance($cm->id)
+        ));
+        $event->trigger();
     }
 
     $transaction->allow_commit();
