@@ -175,7 +175,7 @@ if ($fromform = $mform->get_data()) { // Form submitted
         $todb->id = $session->id;
         if (!facetoface_update_session($todb, $sessiondates)) {
             $transaction->force_transaction_rollback();
-            $event = \mod_facetoface\event\error::create(array(
+            $event = \mod_facetoface\event\module_error::create(array(
                 'objectid' => $cm->id,
                 'courseid' => $course->id,
                 'other' => array(
@@ -197,7 +197,7 @@ if ($fromform = $mform->get_data()) { // Form submitted
     else {
         if (!$sessionid = facetoface_add_session($todb, $sessiondates)) {
             $transaction->force_transaction_rollback();
-            $event = \mod_facetoface\event\error::create(array(
+            $event = \mod_facetoface\event\module_error::create(array(
                 'objectid' => $cm->id,
                 'courseid' => $course->id,
                 'other' => array(

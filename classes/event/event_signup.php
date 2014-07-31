@@ -21,7 +21,7 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Event Class
  */
-class signup extends \core\event\base
+class event_signup extends \core\event\base
 {
     /**
      * Init method.
@@ -67,7 +67,7 @@ class signup extends \core\event\base
      * @return array
      */
     protected function get_legacy_logdata() {
-        return array($this->objectid, 'facetoface', 'session updated', 'signup.php?s=' . $this->other['sessionid'], '');
+        return array($this->objectid, 'facetoface', 'event signup', 'signup.php?s=' . $this->other['sessionid'], '');
     }
 
     /**

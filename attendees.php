@@ -147,7 +147,7 @@ if ($form = data_submitted()) {
             ));
             $event->trigger();
         } else {
-            $event = \mod_facetoface\event\error::create(array(
+            $event = \mod_facetoface\event\module_error::create(array(
                 'objectid' => $cm->id,
                 'courseid' => $course->id,
                 'other' => array(

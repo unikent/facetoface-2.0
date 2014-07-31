@@ -75,7 +75,7 @@ if ($fromform = $mform->get_data()) { // Form submitted
 
     // User can not update Manager's email (depreciated functionality)
     if (!empty($fromform->manageremail)) {
-        $event = \mod_facetoface\event\error::create(array(
+        $event = \mod_facetoface\event\module_error::create(array(
             'objectid' => $cm->id,
             'courseid' => $course->id,
             'other' => array(
@@ -104,7 +104,7 @@ if ($fromform = $mform->get_data()) { // Form submitted
     } else if (facetoface_manager_needed($facetoface) && !facetoface_get_manageremail($USER->id)) {
         print_error('error:manageremailaddressmissing', 'facetoface', $returnurl);
     } else if ($submissionid = facetoface_user_signup($session, $facetoface, $course, $fromform->discountcode, $fromform->notificationtype, $statuscode)) {
-        $event = \mod_facetoface\event\signup::create(array(
+        $event = \mod_facetoface\event\event_signup::create(array(
             'objectid' => $cm->id,
             'courseid' => $course->id,
             'other' => array(

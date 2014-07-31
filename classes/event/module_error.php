@@ -21,7 +21,7 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Event Class
  */
-class error extends \core\event\base
+class module_error extends \core\event\base
 {
     /**
      * Init method.
@@ -67,7 +67,7 @@ class error extends \core\event\base
      * @return array
      */
     protected function get_legacy_logdata() {
-        return array($this->objectid, 'facetoface', 'error', 'view.php?id=' . $this->objectid, '');
+        return array($this->objectid, 'facetoface', 'module error', 'view.php?id=' . $this->objectid, '');
     }
 
     /**
