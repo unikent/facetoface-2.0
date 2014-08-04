@@ -16,6 +16,9 @@
 
 namespace mod_facetoface\task;
 
+global $CFG;
+require_once($CFG->dirroot . '/mod/facetoface/lib.php');
+
 /**
  * Facetoface notifications task.
  */
@@ -43,7 +46,7 @@ class notifications extends \core\task\scheduled_task
             if (facetoface_has_session_started($signupdata, $timenow)) {
                 // Too late, the session already started.
                 // Mark the reminder as being sent already.
-                $newsubmission = new stdClass();
+                $newsubmission = new \stdClass();
                 $newsubmission->id = $signupdata->id;
                 $newsubmission->mailedreminder = 1; // Magic number to show that it was not actually sent.
                 if (!$DB->update_record('facetoface_signups', $newsubmission)) {
@@ -128,7 +131,7 @@ class notifications extends \core\task\scheduled_task
 
             $posthtml = '';
             if ($fromaddress = get_config(null, 'facetoface_fromaddress')) {
-                $from = new stdClass();
+                $from = new \stdClass();
                 $from->maildisplay = true;
                 $from->email = $fromaddress;
             } else {
@@ -138,7 +141,7 @@ class notifications extends \core\task\scheduled_task
             if (email_to_user($user, $from, $postsubject, $posttext, $posthtml)) {
                 echo "\n".get_string('sentreminderuser', 'facetoface').": $user->firstname $user->lastname $user->email";
 
-                $newsubmission = new stdClass();
+                $newsubmission = new \stdClass();
                 $newsubmission->id = $signupdata->id;
                 $newsubmission->mailedreminder = $timenow;
                 if (!$DB->update_record('facetoface_signups', $newsubmission)) {
