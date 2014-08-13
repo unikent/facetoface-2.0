@@ -27,11 +27,9 @@ class session_updated extends \core\event\base
      * Init method.
      */
     protected function init() {
-        global $CFG;
-
         $this->data['objecttable'] = 'facetoface';
         $this->data['crud'] = 'u';
-        $this->data[(floatval($CFG->release) <= 2.6) ? 'level' : 'edulevel'] = self::LEVEL_PARTICIPATING;
+        $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
     }
 
     /**
