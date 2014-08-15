@@ -21,52 +21,6 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Event Class
  */
-class course_module_instance_list_viewed extends \core\event\base
+class course_module_instance_list_viewed extends \core\event\course_module_instance_list_viewed
 {
-    /**
-     * Init method.
-     */
-    protected function init() {
-        global $CFG;
-
-        $this->data['objecttable'] = 'facetoface';
-        $this->data['crud'] = 'r';
-        $this->data[(floatval($CFG->release) <= 2.6) ? 'level' : 'edulevel'] = self::LEVEL_PARTICIPATING;
-    }
-
-    /**
-     * Returns localised general event name.
-     * 
-     * @return string
-     */
-    public static function get_name() {
-        return "Facetoface View All";
-    }
-
-    /**
-     * Returns description of what happened.
-     *
-     * @return string
-     */
-    public function get_description() {
-        return 'User viewed all Facetoface Modules for course \'' . $this->objectid . '\'.';
-    }
-
-    /**
-     * Returns relevant URL.
-     * 
-     * @return \moodle_url
-     */
-    public function get_url() {
-        return new \moodle_url('/mod/facetoface/index.php', array('id' => $this->objectid));
-    }
-
-    /**
-     * Return the legacy event log data.
-     * 
-     * @return array
-     */
-    protected function get_legacy_logdata() {
-        return array($this->objectid, 'facetoface', 'view all', 'index.php?id=' . $this->objectid, '');
-    }
 }
