@@ -755,18 +755,18 @@ function facetoface_email_substitutions($msg, $facetofacename, $reminderperiod, 
 
     if ($data->datetimeknown) {
         // Scheduled session
-        $sessiondate = userdate($data->sessiondates[0]->timestart, get_string('strftimedate'));
-        $starttime = userdate($data->sessiondates[0]->timestart, get_string('strftimetime'));
-        $finishtime = userdate($data->sessiondates[0]->timefinish, get_string('strftimetime'));
+        $sessiondate = userdate($data->sessiondates[0]->timestart, get_string('strftimedate'), $user->timezone);
+        $starttime = userdate($data->sessiondates[0]->timestart, get_string('strftimetime'), $user->timezone);
+        $finishtime = userdate($data->sessiondates[0]->timefinish, get_string('strftimetime'), $user->timezone);
 
         $alldates = '';
         foreach ($data->sessiondates as $date) {
             if ($alldates != '') {
                 $alldates .= "\n";
             }
-            $alldates .= userdate($date->timestart, get_string('strftimedate')).', ';
-            $alldates .= userdate($date->timestart, get_string('strftimetime')).
-                ' to '.userdate($date->timefinish, get_string('strftimetime'));
+            $alldates .= userdate($date->timestart, get_string('strftimedate'), $user->timezone).', ';
+            $alldates .= userdate($date->timestart, get_string('strftimetime'), $user->timezone).
+                ' to '.userdate($date->timefinish, get_string('strftimetime'), $user->timezone);
         }
     }
     else {
