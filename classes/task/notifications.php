@@ -88,9 +88,10 @@ class notifications extends \core\task\scheduled_task
                 continue;
             }
 
-            // Hack to make sure that the language is set properly in emails
-            // (i.e. it uses the language of the recipient of the email).
+            // Hack to make sure that the timezone and languages are set properly in emails
+            // (i.e. it uses the language and timezone of the recipient of the email).
             $USER->lang = $user->lang;
+            $USER->timezone = $user->timezone;
 
             if (!$course = $DB->get_record('course', array('id' => $signupdata->course))) {
                 continue;
