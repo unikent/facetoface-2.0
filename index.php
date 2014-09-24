@@ -16,7 +16,6 @@ $context = context_course::instance($course->id);
 require_capability('mod/facetoface:view', $context);
 
 $event = \mod_facetoface\event\course_module_instance_list_viewed::create(array(
-    'objectid' => $course->id,
     'context' => \course_context::instance($course->id)
 ));
 $event->trigger();
