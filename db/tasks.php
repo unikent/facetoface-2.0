@@ -14,14 +14,30 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Copyright (C) 2007-2011 Catalyst IT (http://www.catalyst.net.nz)
+ * Copyright (C) 2011-2013 Totara LMS (http://www.totaralms.com)
+ * Copyright (C) 2014 onwards Catalyst IT (http://www.catalyst-eu.net)
+ *
+ * @package    mod
+ * @subpackage facetoface
+ * @copyright  2014 onwards Catalyst IT <http://www.catalyst-eu.net>
+ * @author     Stacey Walker <stacey@catalyst-eu.net>
+ * @author     Alastair Munro <alastair.munro@totaralms.com>
+ * @author     Aaron Barnes <aaron.barnes@totaralms.com>
+ * @author     Francois Marier <francois@catalyst.net.nz>
+ */
+
+defined('MOODLE_INTERNAL') || die();
+
 $tasks = array(
     array(
-        'classname' => 'mod_facetoface\task\notifications',
-        'blocking' => 0,
-        'minute' => '5',
-        'hour' => '*',
-        'day' => '*',
-        'dayofweek' => '*',
-        'month' => '*'
+        'classname' => 'mod_facetoface\task\cron_task',
+        'blocking'  => 0,
+        'minute'    => '*',
+        'hour'      => '1',
+        'day'       => '*',
+        'month'     => '*',
+        'dayofweek' => '*'
     )
 );

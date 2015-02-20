@@ -30,7 +30,7 @@ namespace mod_facetoface\event;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * The mod_facetoface attendees viewed event class.
+ * The mod_facetoface signup event class.
  *
  * @package    mod_facetoface
  * @since      Moodle 2.7
@@ -38,7 +38,7 @@ defined('MOODLE_INTERNAL') || die();
  * @author     Stacey Walker <stacey@catalyst-eu.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class attendees_viewed extends \core\event\base {
+class signup extends \core\event\base {
 
     /**
      * Init method.
@@ -57,7 +57,7 @@ class attendees_viewed extends \core\event\base {
      * @return string
      */
     public function get_description() {
-        return "The user with id '$this->userid' has viewed the attendees for session with id '$this->objectid' in the facetoface instance " .
+        return "The user with id '$this->userid' has signed up for session with id '$this->objectid' in the facetoface instance " .
             "with the course module id '$this->contextinstanceid'.";
     }
 
@@ -67,7 +67,7 @@ class attendees_viewed extends \core\event\base {
      * @return string
      */
     public static function get_name() {
-        return get_string('eventattendeesviewed', 'mod_facetoface');
+        return get_string('eventsignup', 'mod_facetoface');
     }
 
     /**
@@ -76,7 +76,7 @@ class attendees_viewed extends \core\event\base {
      * @return \moodle_url
      */
     public function get_url() {
-        return new \moodle_url('/mod/facetoface/attendees.php', array('s' => $this->objectid));
+        return new \moodle_url('/mod/facetoface/signup.php', array('s' => $this->objectid));
     }
 
     /**
@@ -85,7 +85,7 @@ class attendees_viewed extends \core\event\base {
      * @return array|null
      */
     protected function get_legacy_logdata() {
-        return array($this->courseid, $this->objecttable, 'view attendees', 'attendees.php?s=' . $this->objectid,
+        return array($this->courseid, $this->objecttable, 'signup', 'signup.php?s=' . $this->objectid,
             $this->objectid, $this->contextinstanceid);
     }
 
