@@ -28,12 +28,27 @@
  * @author     Francois Marier <francois@catalyst.net.nz>
  */
 
+namespace mod_facetoface\task;
+
 defined('MOODLE_INTERNAL') || die();
 
-// List of observers.
-$observers = array(
-    array(
-        'eventname'   => '\core\event\user_enrolment_deleted',
-        'callback'    => 'mod_facetoface_observer::user_enrolment_deleted',
-    ),
-);
+class cron_task extends \core\task\scheduled_task {
+
+    /**
+     * Get a descriptive name for this task (shown to admins).
+     *
+     * @return string
+     */
+    public function get_name() {
+        return get_string('crontask', 'mod_facetoface');
+    }
+
+    /**
+     * Run Face-to-Face cron.
+     */
+    public function execute() {
+        global $CFG;
+        require_once($CFG->dirroot . '/mod/facetoface/lib.php');
+        facetoface_cron();
+    }
+}

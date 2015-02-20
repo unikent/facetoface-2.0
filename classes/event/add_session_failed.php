@@ -30,7 +30,7 @@ namespace mod_facetoface\event;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * The mod_facetoface attendees viewed event class.
+ * The mod_facetoface add session failed event class.
  *
  * @package    mod_facetoface
  * @since      Moodle 2.7
@@ -38,7 +38,7 @@ defined('MOODLE_INTERNAL') || die();
  * @author     Stacey Walker <stacey@catalyst-eu.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class attendees_viewed extends \core\event\base {
+class add_session_failed extends \core\event\base {
 
     /**
      * Init method.
@@ -48,7 +48,7 @@ class attendees_viewed extends \core\event\base {
     protected function init() {
         $this->data['crud'] = 'r';
         $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
-        $this->data['objecttable'] = 'facetoface_sessions';
+        $this->data['objecttable'] = 'facetoface';
     }
 
     /**
@@ -57,8 +57,8 @@ class attendees_viewed extends \core\event\base {
      * @return string
      */
     public function get_description() {
-        return "The user with id '$this->userid' has viewed the attendees for session with id '$this->objectid' in the facetoface instance " .
-            "with the course module id '$this->contextinstanceid'.";
+        return "The user with id '$this->userid' has tried to add a session in the facetoface instance " .
+            "with the course module id '$this->contextinstanceid' and it failed.";
     }
 
     /**
@@ -67,7 +67,7 @@ class attendees_viewed extends \core\event\base {
      * @return string
      */
     public static function get_name() {
-        return get_string('eventattendeesviewed', 'mod_facetoface');
+        return get_string('eventaddsessionfailed', 'mod_facetoface');
     }
 
     /**
@@ -76,7 +76,7 @@ class attendees_viewed extends \core\event\base {
      * @return \moodle_url
      */
     public function get_url() {
-        return new \moodle_url('/mod/facetoface/attendees.php', array('s' => $this->objectid));
+        return new \moodle_url('/mod/facetoface/sessions.php', array('f' => $this->objectid));
     }
 
     /**
@@ -85,7 +85,7 @@ class attendees_viewed extends \core\event\base {
      * @return array|null
      */
     protected function get_legacy_logdata() {
-        return array($this->courseid, $this->objecttable, 'view attendees', 'attendees.php?s=' . $this->objectid,
+        return array($this->courseid, $this->objecttable, 'add session (FAILED)', 'sessions.php?f=' . $this->objectid,
             $this->objectid, $this->contextinstanceid);
     }
 
