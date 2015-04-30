@@ -51,7 +51,11 @@ class mod_facetoface_mod_form extends moodleform_mod {
         }
         $mform->addRule('name', null, 'required', null, 'client');
 
-        $this->add_intro_editor(true);
+        if (method_exists($this, 'standard_intro_elements')) {
+            $this->standard_intro_elements();
+        } else {
+            $this->add_intro_editor(true);
+        }
 
         $mform->addElement('text', 'thirdparty', get_string('thirdpartyemailaddress', 'facetoface'), array('size' => '64'));
         $mform->setType('thirdparty', PARAM_EMAIL);
