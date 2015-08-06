@@ -103,7 +103,7 @@ class facetofacelib_test extends prefix_changing_test_case {
         array('id',     'sessionid',    'timestart',    'timefinish'),
         array(1,        1,              1100,           1300),
         array(2,        2,              1900,           2100),
-        array(3,        3,              0900,           1100),
+        array(3,        3,              900,            1100),
         array(3,        3,              1200,           1400),
     );
 
