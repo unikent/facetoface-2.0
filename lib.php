@@ -390,8 +390,9 @@ function facetoface_delete_instance($id) {
     $DB->delete_records('facetoface_sessions', array('facetoface' => $facetoface->id));
     $DB->delete_records('facetoface', array('id' => $facetoface->id));
     $DB->delete_records('event', array('modulename' => 'facetoface', 'instance' => $facetoface->id));
-    facetoface_grade_item_delete($facetoface);
     $transaction->allow_commit();
+
+    facetoface_grade_item_delete($facetoface);
 
     return $result;
 }
