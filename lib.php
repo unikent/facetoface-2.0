@@ -364,8 +364,6 @@ function facetoface_delete_instance($id) {
         return false;
     }
 
-    $result = true;
-    $transaction = $DB->start_delegated_transaction();
     $DB->delete_records_select(
         'facetoface_signups_status',
         "signupid IN
@@ -390,10 +388,8 @@ function facetoface_delete_instance($id) {
     $DB->delete_records('facetoface_sessions', array('facetoface' => $facetoface->id));
     $DB->delete_records('facetoface', array('id' => $facetoface->id));
     $DB->delete_records('event', array('modulename' => 'facetoface', 'instance' => $facetoface->id));
-    facetoface_grade_item_delete($facetoface);
-    $transaction->allow_commit();
 
-    return $result;
+    return facetoface_grade_item_delete($facetoface);
 }
 
 /**
