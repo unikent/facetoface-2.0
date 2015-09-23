@@ -99,11 +99,10 @@ function xmldb_facetoface_upgrade($oldversion=0) {
     }
 
     if ($result && $oldversion < 2008080100) {
-        echo $OUTPUT->notification(get_string('upgradeprocessinggrades', 'facetoface'), 'notifysuccess');
+        mtrace(get_string('upgradeprocessinggrades', 'facetoface'), 'notifysuccess');
         require_once($CFG->dirroot . '/mod/facetoface/lib.php');
 
         $transaction = $DB->start_delegated_transaction();
-        $DB->debug = false; // Too much debug output.
 
         // Migrate the grades to the gradebook.
         $sql = "SELECT f.id, f.name, f.course, s.grade, s.timegraded, s.userid,
@@ -127,7 +126,6 @@ function xmldb_facetoface_upgrade($oldversion=0) {
             }
             $rs->close();
         }
-        $DB->debug = true;
 
         // Remove the grade and timegraded fields from facetoface_submissions.
         if ($result) {
