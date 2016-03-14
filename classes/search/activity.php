@@ -34,4 +34,22 @@ defined('MOODLE_INTERNAL') || die();
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class activity extends \core_search\area\base_activity {
+    /**
+     * Returns the document associated with this activity.
+     *
+     * @param stdClass $record Post info.
+     * @return \core_search\document
+     */
+    public function get_document($record) {
+        $doc = parent::get_document($record);
+        if (!$doc) {
+            return false;
+        }
+
+        if (!empty($record->shortname)) {
+            $doc->set('shortname', "{$record->shortname}");
+        }
+
+        return $doc;
+    }
 }
