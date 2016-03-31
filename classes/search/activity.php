@@ -35,13 +35,18 @@ defined('MOODLE_INTERNAL') || die();
  */
 class activity extends \core_search\area\base_activity {
     /**
+     * Activities with a time created field can overwrite this constant.
+     */
+    const CREATED_FIELD_NAME = 'timecreated';
+
+    /**
      * Returns the document associated with this activity.
      *
      * @param stdClass $record Post info.
      * @return \core_search\document
      */
-    public function get_document($record) {
-        $doc = parent::get_document($record);
+    public function get_document($record, $options = array()) {
+        $doc = parent::get_document($record, $options);
         if (!$doc) {
             return false;
         }
