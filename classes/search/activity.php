@@ -52,7 +52,7 @@ class activity extends \core_search\area\base_activity {
         }
 
         if (!empty($record->shortname)) {
-            $doc->set('shortname', "{$record->shortname}");
+            $doc->set_extra('shortname', "{$record->shortname}");
         }
 
         return $doc;
